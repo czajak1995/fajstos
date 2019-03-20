@@ -22,12 +22,13 @@ public class AudioController {
     @Autowired
     AudioService service;
 
-    @GetMapping(params = "track_name")
+    @GetMapping(params = {"track_name"})
     public ResponseEntity<InputStreamResource> getTrackByName(
-            @RequestParam(value = "track_name") String name) {
+            @RequestParam(value = "track_name") String name,
+            @RequestParam(value = "speaker", defaultValue = "dorota", required = false) String speaker) {
         HttpStatus status = HttpStatus.OK;
 
-        Track track = service.getTrackByName(name);
+        Track track = service.getTrackByName(name, speaker);
 
         if (track == null) {
             status = HttpStatus.NOT_FOUND;
@@ -36,12 +37,13 @@ public class AudioController {
         return new ResponseEntity<>(track.getStreamResource(), getMp3Headers(), status);
     }
 
-    @GetMapping(params = "track_names", path = "/merge")
+    @GetMapping(params = {"track_names"}, path = "/merge")
     public ResponseEntity<InputStreamResource> getMergedAudio(
-            @RequestParam(value = "track_names") List<String> names) {
+            @RequestParam(value = "track_names") List<String> names,
+            @RequestParam(value = "speaker", defaultValue = "dorota", required = false) String speaker) {
         HttpStatus status = HttpStatus.OK;
 
-        InputStreamResource isr = service.getMergedAudio(names);
+        InputStreamResource isr = service.getMergedAudio(names, speaker);
 
         if (isr == null) {
             status = HttpStatus.NOT_FOUND;

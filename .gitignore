@@ -3,3 +3,4 @@ out/
 .idea/
 tracks/
 backup/
+tracks.sql

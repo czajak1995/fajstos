@@ -17,8 +17,12 @@ public class AudioService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Track getTrackByName(String name) {
-        String GET_TRACK_BY_NAME_SQL = "SELECT name, path FROM Tracks WHERE name='" + name + "'";
+    public Track getTrackByName(String name, String speaker) {
+        Integer speakerId = getSpeakerIdByName(speaker);
+        if(speakerId == null) return null;
+
+        final String GET_TRACK_BY_NAME_SQL = "SELECT name, path FROM Tracks " +
+                "WHERE name='" + name + "' AND voice_over_id=" + speakerId;
 
         List<Track> tracks = jdbcTemplate.query(GET_TRACK_BY_NAME_SQL,
                 (rs, rowNum) -> new Track(
@@ -43,11 +47,12 @@ public class AudioService {
         return track;
     }
 
-    public InputStreamResource getMergedAudio(List<String> names) {
+    public InputStreamResource getMergedAudio(List<String> names, String speaker) {
         List<Track> partTracks = new ArrayList<>();
 
         for(String name : names) {
-            partTracks.add(getTrackByName(name));
+            Track track = getTrackByName(name, speaker);
+            if(track != null) partTracks.add(track);
         }
 
         if(partTracks.size() != names.size()) return null;
@@ -66,6 +71,15 @@ public class AudioService {
         SequenceInputStream sis = new SequenceInputStream(Collections.enumeration(partInputStreams));
 
         return new InputStreamResource(sis, "track");
+    }
+
+    private Integer getSpeakerIdByName(String speaker) {
+        final String GET_SPEAKER_ID_BY_NAME_SQL = "SELECT id from VoiceOvers WHERE name='" + speaker + "'";
+
+        List<Integer> speakerIds = jdbcTemplate.query(GET_SPEAKER_ID_BY_NAME_SQL,
+                (rs, rowNum) -> rs.getInt(1));
+
+        return (speakerIds == null || speakerIds.size() != 1) ? null : speakerIds.get(0);
     }
 
 }
