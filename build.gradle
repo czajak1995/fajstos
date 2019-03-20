@@ -1,0 +1,42 @@
+group 'com.academic'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.9.RELEASE")
+    }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile group: 'javax.persistence', name: 'persistence-api', version: '1.0'
+
+    // Spring boot dependencies
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile 'org.springframework:spring-core'
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+
+    testCompile group: 'org.springframework', name: 'org.springframework.test', version: '3.2.1.RELEASE'
+
+    // Database dependencies
+    compile 'mysql:mysql-connector-java'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.1.1.RELEASE'
+
+    // Database migration
+    compile group: 'org.flywaydb', name: 'flyway-core', version: '5.2.4'
+}
