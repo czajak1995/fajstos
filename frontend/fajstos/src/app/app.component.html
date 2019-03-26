@@ -1,0 +1,28 @@
+<!-- <meta charset="utf-8">
+<p class="icon-down"></p> -->
+
+<form>
+  <div fxLayout="row">
+    <div id="characters-palette">
+      <mat-grid-list cols="6" rowHeight="1:1" gutterSize="4" style="padding:10px">
+        <mat-grid-tile *ngFor="let i of [1,2]" (click)="display(1)">
+            <div id="glyph">
+              <div *ngIf="i <10" class="glyph-img"> 
+                <img src="assets/icons/800px-Phaistos_glyph_0{{i}}.svg.png" width=60px>
+              </div>
+              <div class="glyph-input">
+                <input id="glyph-input" name="glyph-mapping" maxlength=2 minlength=2 required="required" pattern="^[qwrtpsdfghjklzxcvbnm][aeiouy]$" 
+                      title="Glyph mapping [consonant][vovel]">
+              </div>
+            </div>
+          </mat-grid-tile>
+      </mat-grid-list>
+    </div> 
+
+    <div>
+      <input type="submit">
+    </div>
+
+  </div>
+
+</form>
