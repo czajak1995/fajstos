@@ -2,14 +2,9 @@
   <div fxLayout="row">
     <div id="characters-palette">
       <mat-grid-list cols="10" rowHeight="1:1" gutterSize="4" style="padding:10px">
-        <mat-grid-tile *ngFor="let number of numbers" (click)="display(number)">
+        <mat-grid-tile *ngFor="let glyph of glyphs" (click)="display(glyph.id)">
             <div id="glyph">
-              <div *ngIf="number<10" class="glyph-img"> 
-                <img src="assets/icons/Phaistos_glyph_0{{number}}.svg.png" width=50px>
-              </div>
-              <div *ngIf="number>=10" class="glyph-img"> 
-                  <img src="assets/icons/Phaistos_glyph_{{number}}.svg.png" width=50px>
-                </div>
+              <img src="{{glyph.imgUrl}}" width=50px>
               <div class="glyph-input">
                 <input id="glyph-input" name="glyph-mapping" maxlength=2 minlength=2 required="required" pattern="^[qwrtpsdfghjklzxcvbnm][aeiouy]$" 
                       title="Glyph mapping [consonant][vovel]">
