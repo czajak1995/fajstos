@@ -7,6 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'fajstos';
+  numbers = []
+
+  constructor() {
+    this.numbers = Array(16).fill(0).map((x,i)=>i+1);
+  }
 
   
 

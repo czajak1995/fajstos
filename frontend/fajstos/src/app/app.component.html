@@ -1,15 +1,15 @@
-<!-- <meta charset="utf-8">
-<p class="icon-down"></p> -->
-
 <form>
   <div fxLayout="row">
     <div id="characters-palette">
-      <mat-grid-list cols="6" rowHeight="1:1" gutterSize="4" style="padding:10px">
-        <mat-grid-tile *ngFor="let i of [1,2]" (click)="display(1)">
+      <mat-grid-list cols="10" rowHeight="1:1" gutterSize="4" style="padding:10px">
+        <mat-grid-tile *ngFor="let number of numbers" (click)="display(number)">
             <div id="glyph">
-              <div *ngIf="i <10" class="glyph-img"> 
-                <img src="assets/icons/800px-Phaistos_glyph_0{{i}}.svg.png" width=60px>
+              <div *ngIf="number<10" class="glyph-img"> 
+                <img src="assets/icons/Phaistos_glyph_0{{number}}.svg.png" width=50px>
               </div>
+              <div *ngIf="number>=10" class="glyph-img"> 
+                  <img src="assets/icons/Phaistos_glyph_{{number}}.svg.png" width=50px>
+                </div>
               <div class="glyph-input">
                 <input id="glyph-input" name="glyph-mapping" maxlength=2 minlength=2 required="required" pattern="^[qwrtpsdfghjklzxcvbnm][aeiouy]$" 
                       title="Glyph mapping [consonant][vovel]">
@@ -17,7 +17,8 @@
             </div>
           </mat-grid-tile>
       </mat-grid-list>
-    </div> 
+    </div>
+    <br/>
 
     <div>
       <input type="submit">
@@ -26,3 +27,27 @@
   </div>
 
 </form>
+<!-- <div fxLayout="row wrap" fxFlex="50%" fxFlex.gt-sm="50%" >
+    <div>
+      <div class="glyph-input">
+        <input id="glyph-input" name="glyph-mapping" maxlength=2 minlength=2 required="required" pattern="^[qwrtpsdfghjklzxcvbnm][aeiouy]$" 
+              title="Glyph mapping [consonant][vovel]">
+  
+       <div><div id="characters-palette">
+          <mat-grid-list cols="6" rowHeight="1:1" gutterSize="4" style="padding:10px">
+            <mat-grid-tile *ngFor="let number of numbers" (click)="display(number)">
+                <div id="glyph">
+                  <div *ngIf="number<10" class="glyph-img"> 
+                    <img src="assets/icons/Phaistos_glyph_0{{number}}.svg.png" width=50px>
+                  </div>
+                  <div *ngIf="number>=10" class="glyph-img"> 
+                      <img src="assets/icons/Phaistos_glyph_{{number}}.svg.png" width=50px>
+                    </div>
+                  <div class="glyph-input">
+                    <input id="glyph-input" name="glyph-mapping" maxlength=2 minlength=2 required="required" pattern="^[qwrtpsdfghjklzxcvbnm][aeiouy]$" 
+                          title="Glyph mapping [consonant][vovel]">
+                  </div>
+                </div>
+              </mat-grid-tile>
+          </mat-grid-list></div> <div>3. Three</div> <div>4. Four</div>
+  </div> -->
