@@ -82,4 +82,8 @@ public class AudioService {
         return (speakerIds == null || speakerIds.size() != 1) ? null : speakerIds.get(0);
     }
 
+    public List<String> getAllSpeakerNames() {
+        return jdbcTemplate.query("SELECT name from VoiceOvers",
+                (rs, rowNum) -> rs.getString(1));
+    }
 }

@@ -52,6 +52,18 @@ public class AudioController {
         return new ResponseEntity<>(isr, getMp3Headers(), status);
     }
 
+    @GetMapping(path = "/speakers")
+    public ResponseEntity<List<String>> getAllSpeakerNames() {
+        HttpStatus status = HttpStatus.OK;
+
+        List<String> speakerNames = service.getAllSpeakerNames();
+        if(speakerNames == null || speakerNames.size() == 0) {
+            status = HttpStatus.NOT_FOUND;
+        }
+
+        return new ResponseEntity<>(speakerNames, status);
+    }
+
     private HttpHeaders getMp3Headers() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf("audio/mpeg"));

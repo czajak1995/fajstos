@@ -19,6 +19,7 @@ export class AppComponent {
   fullText: string = "";
   mp3Notes: string[] = [];
   speaker: string = "dorota";
+  speakers: string[] = [];
 
   validation_messages = {
     'mapping': [
@@ -40,6 +41,8 @@ export class AppComponent {
         this.glyphs.push(new PhaistosGlyph(i,"","assets/icons/Phaistos_glyph_" + i + ".svg.png"));
       }
     }
+
+    _service.getAllSpeakerNames().subscribe((data) => this.speakers = data)
   }
 
   public display(glyph : PhaistosGlyph) {

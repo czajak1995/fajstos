@@ -20,11 +20,10 @@
 
 <br/>
 <textarea id="fullMappingText" [(ngModel)]="fullText"></textarea>
-
-<select [(ngModel)]='speaker' class='form-control'>
-    <option value='konrad'>konrad</option>
-    <option value='dorota'>dorota</option>
-  </select>
+  
+<select [(ngModel)]='speaker'>
+  <option *ngFor="let s of speakers" [value]="s">{{s}}</option>
+</select>
 
 <br/>
 <button (click)="record()">Record mp3</button>
