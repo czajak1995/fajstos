@@ -3,8 +3,6 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { AudioService } from './audio/audio.service';
 import { saveAs } from 'file-saver';
 
-export const BASE_URL: string = "http://localhost:8080/audio";
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
