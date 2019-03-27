@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 })
 export class AudioService {
 
-  BASE_URL : string = "http://localhost:8080/audio";
+  // BASE_URL : string = "http://localhost:8080/audio";
+  BASE_URL : string = "http://ec2-3-82-146-240.compute-1.amazonaws.com:8080";
 
   constructor(private http: HttpClient) { }
 
