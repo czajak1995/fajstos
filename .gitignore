@@ -4,3 +4,4 @@ out/
 tracks/
 backup/
 tracks.sql
+keystore.p12
