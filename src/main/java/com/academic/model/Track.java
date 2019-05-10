@@ -1,31 +1,33 @@
 package com.academic.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 
+import javax.persistence.*;
+
+@Data
+@NoArgsConstructor
+@Entity(name = "tracks")
 public class Track {
 
-    String name;
-    String path;
-    InputStreamResource streamResource;
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String name;
+    private String path;
+
+    @ManyToOne
+    @JoinColumn(name = "voice_over_id")
+    private Speaker speaker;
+
+    @Transient
+    private InputStreamResource streamResource;
 
     public Track(String name, String path) {
         this.name = name;
         this.path = path;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public InputStreamResource getStreamResource() {
-        return streamResource;
-    }
-
-    public void setStreamResource(InputStreamResource streamResource) {
-        this.streamResource = streamResource;
-    }
 }

@@ -1,31 +1,24 @@
 package com.academic.service;
 
 import com.academic.model.Track;
+import com.academic.repository.AudioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Component
+@Service
 public class AudioService {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private AudioRepository audioRepository;
 
     public Track getTrackByName(String name) {
-        String GET_TRACK_BY_NAME_SQL = "SELECT name, path FROM Tracks WHERE name='" + name + "'";
-
-        List<Track> tracks = jdbcTemplate.query(GET_TRACK_BY_NAME_SQL,
-                (rs, rowNum) -> new Track(
-                        rs.getString(1),
-                        rs.getString(2)
-                )
-        );
+        List<Track> tracks = audioRepository.findByName(name);
 
         if(tracks == null || tracks.size() == 0) return null;
 
