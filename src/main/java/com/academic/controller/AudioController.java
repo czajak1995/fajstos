@@ -21,7 +21,7 @@ import java.util.List;
 public class AudioController {
 
     @Autowired
-    AudioService service;
+    AudioService audioService;
 
     @Autowired
     SpeakerService speakerService;
@@ -32,7 +32,7 @@ public class AudioController {
             @RequestParam(value = "speaker", defaultValue = "dorota", required = false) String speaker) {
         HttpStatus status = HttpStatus.OK;
 
-        Track track = service.getTrackByNameAndSpeaker(name, speaker);
+        Track track = audioService.getTrackByNameAndSpeaker(name, speaker);
 
         if (track == null) {
             status = HttpStatus.NOT_FOUND;
@@ -48,7 +48,7 @@ public class AudioController {
             @RequestParam(value = "speaker", defaultValue = "dorota", required = false) String speaker) {
         HttpStatus status = HttpStatus.OK;
 
-        InputStreamResource isr = service.getMergedAudio(names, speaker);
+        InputStreamResource isr = audioService.getMergedAudio(names, speaker);
 
         if (isr == null) {
             status = HttpStatus.NOT_FOUND;
@@ -58,7 +58,7 @@ public class AudioController {
     }
 
     @GetMapping(path = "/speakers")
-    public ResponseEntity<List<String>> getAllSpeakersNames() {
+    public ResponseEntity<List<String>> getAllSpeakerNames() {
         HttpStatus status = HttpStatus.OK;
 
         List<String> speakerNames = speakerService.getAllSpeakersNames();
