@@ -2,6 +2,7 @@ package com.academic.controller;
 
 import com.academic.model.Track;
 import com.academic.service.AudioService;
+import com.academic.service.SpeakerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -22,32 +23,50 @@ public class AudioController {
     @Autowired
     AudioService service;
 
-    @GetMapping(params = "track_name")
+    @Autowired
+    SpeakerService speakerService;
+
+    @GetMapping(params = {"track_name"})
     public ResponseEntity<InputStreamResource> getTrackByName(
-            @RequestParam(value = "track_name") String name) {
+            @RequestParam(value = "track_name") String name,
+            @RequestParam(value = "speaker", defaultValue = "dorota", required = false) String speaker) {
         HttpStatus status = HttpStatus.OK;
 
-        Track track = service.getTrackByName(name);
+        Track track = service.getTrackByNameAndSpeaker(name, speaker);
 
         if (track == null) {
             status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(status);
         }
 
         return new ResponseEntity<>(track.getStreamResource(), getMp3Headers(), status);
     }
 
-    @GetMapping(params = "track_names", path = "/merge")
+    @GetMapping(params = {"track_names"}, path = "/merge")
     public ResponseEntity<InputStreamResource> getMergedAudio(
-            @RequestParam(value = "track_names") List<String> names) {
+            @RequestParam(value = "track_names") List<String> names,
+            @RequestParam(value = "speaker", defaultValue = "dorota", required = false) String speaker) {
         HttpStatus status = HttpStatus.OK;
 
-        InputStreamResource isr = service.getMergedAudio(names);
+        InputStreamResource isr = service.getMergedAudio(names, speaker);
 
         if (isr == null) {
             status = HttpStatus.NOT_FOUND;
         }
 
         return new ResponseEntity<>(isr, getMp3Headers(), status);
+    }
+
+    @GetMapping(path = "/speakers")
+    public ResponseEntity<List<String>> getAllSpeakersNames() {
+        HttpStatus status = HttpStatus.OK;
+
+        List<String> speakerNames = speakerService.getAllSpeakersNames();
+        if(speakerNames == null || speakerNames.size() == 0) {
+            status = HttpStatus.NOT_FOUND;
+        }
+
+        return new ResponseEntity<>(speakerNames, status);
     }
 
     private HttpHeaders getMp3Headers() {

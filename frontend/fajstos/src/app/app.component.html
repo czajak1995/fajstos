@@ -1,0 +1,29 @@
+<form [formGroup]="glyphFormGroup">
+  <div id="characters-palette">
+    <mat-grid-list cols="10" rowHeight="1:1" gutterSize="4" style="padding:10px">
+      <mat-grid-tile *ngFor="let glyph of glyphs">
+          <div id="glyph">
+            <img src="{{glyph.imgUrl}}" width=50px (click)="display(glyph)">
+            <div class="glyph-input">
+              <input matInput [(ngModel)]="glyph.mapping" id="glyph-input" maxlength=2 minlength=2 required
+                    title="Glyph mapping [consonant][vovel]" formControlName="mapping">
+            </div>
+          </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <br/>
+
+  <button class="submit-btn" color="primary" mat-raised-button type="submit">Submit</button>
+
+</form>
+
+<br/>
+<textarea id="fullMappingText" [(ngModel)]="fullText"></textarea>
+  
+<select [(ngModel)]='speaker'>
+  <option *ngFor="let s of speakers" [value]="s">{{s}}</option>
+</select>
+
+<br/>
+<button (click)="record()">Record mp3</button>

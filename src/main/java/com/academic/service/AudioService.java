@@ -1,7 +1,9 @@
 package com.academic.service;
 
+import com.academic.model.Speaker;
 import com.academic.model.Track;
 import com.academic.repository.AudioRepository;
+import com.academic.repository.SpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,16 @@ public class AudioService {
     @Autowired
     private AudioRepository audioRepository;
 
-    public Track getTrackByName(String name) {
-        List<Track> tracks = audioRepository.findByName(name);
+    @Autowired
+    private SpeakerRepository speakerRepository;
+
+    public Track getTrackByNameAndSpeaker(String name, String speakerName) {
+        Speaker speaker = speakerRepository.findOneByName(speakerName);
+        if(speaker == null) {
+            return null;
+        }
+
+        List<Track> tracks = audioRepository.findByNameAndSpeaker(name, speaker);
 
         if(tracks == null || tracks.size() == 0) return null;
 
@@ -36,11 +46,12 @@ public class AudioService {
         return track;
     }
 
-    public InputStreamResource getMergedAudio(List<String> names) {
+    public InputStreamResource getMergedAudio(List<String> names, String speaker) {
         List<Track> partTracks = new ArrayList<>();
 
         for(String name : names) {
-            partTracks.add(getTrackByName(name));
+            Track track = getTrackByNameAndSpeaker(name, speaker);
+            if(track != null) partTracks.add(track);
         }
 
         if(partTracks.size() != names.size()) return null;
