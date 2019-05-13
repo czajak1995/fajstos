@@ -4,7 +4,9 @@ import com.academic.model.Speaker;
 import com.academic.model.Track;
 import com.academic.repository.AudioRepository;
 import com.academic.repository.SpeakerRepository;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 
@@ -36,10 +38,15 @@ public class AudioService {
         String path = track.getPath();
         File mp3File = new File(path);
 
-        try {
-            InputStreamResource isr = new InputStreamResource(new FileInputStream(mp3File));
+        try(FileInputStream is = new FileInputStream(mp3File)) {
+            byte[] bytes = IOUtils.toByteArray(is);
+            ByteArrayResource isr = new ByteArrayResource(bytes);
             track.setStreamResource(isr);
         } catch(FileNotFoundException fnfe) {
+            fnfe.printStackTrace();
+            return null;
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
             return null;
         }
 

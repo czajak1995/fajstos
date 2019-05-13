@@ -4,6 +4,7 @@ import com.academic.model.Track;
 import com.academic.service.AudioService;
 import com.academic.service.SpeakerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class AudioController {
     SpeakerService speakerService;
 
     @GetMapping(params = {"track_name"})
-    public ResponseEntity<InputStreamResource> getTrackByName(
+    public ResponseEntity<ByteArrayResource> getTrackByName(
             @RequestParam(value = "track_name") String name,
             @RequestParam(value = "speaker", defaultValue = "dorota", required = false) String speaker) {
         HttpStatus status = HttpStatus.OK;

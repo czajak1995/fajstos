@@ -2,6 +2,7 @@ package com.academic.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ public class Track {
     private Speaker speaker;
 
     @Transient
-    private InputStreamResource streamResource;
+    private ByteArrayResource streamResource;
 
     public Track(String name, String path) {
         this.name = name;
