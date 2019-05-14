@@ -11,6 +11,9 @@ security:
         name: admin
         password: nimda
 
+#server:
+#    port: 8888
+
 spring:
     main:
         allow-bean-definition-overriding: true
@@ -33,10 +36,10 @@ spring:
             hibernate:
                 dialect: org.hibernate.dialect.MySQL5Dialect
 
-#server:
-#    port: 8443
-#    ssl:
-#        key-store: keystore.p12
-#        key-store-password: rootroot
-#        keyStoreType: PKCS12
-#        keyAlias: phaistos
+server:
+    port: 8443
+    ssl:
+        key-store: keystore.p12
+        key-store-password: rootroot
+        keyStoreType: PKCS12
+        keyAlias: phaistos
