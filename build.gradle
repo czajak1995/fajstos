@@ -3,27 +3,23 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'org.hidetake.ssh'
 
 buildscript {
     ext {
+        appName = 'fajstos-server'
+        appVersion = '1.0'
         springBootVersion = '2.1.1.RELEASE'
     }
-    
+
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.9.RELEASE")
+        classpath('org.hidetake:gradle-ssh-plugin:2.10.1')
     }
-}
-
-jar {
-    baseName = 'fajstos-server'
-    version = '1.0'
-    manifest {
-        attributes 'Main-Class': 'com.master.Application'
-    }
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 sourceCompatibility = 1.8
@@ -31,6 +27,44 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+}
+
+jar {
+    baseName = appName
+    version = appVersion
+    manifest {
+        attributes 'Main-Class': 'com.master.Application'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+remotes {
+    aws {
+        host = 'ec2-35-173-193-111.compute-1.amazonaws.com'
+        user = "ubuntu"
+        identity = file('ec2-shopping-server.pem')
+    }
+}
+
+ssh.settings {
+    knownHosts = allowAnyHosts
+}
+
+task deployProd {
+//    dependsOn build
+    doLast {
+        ssh.run {
+            session(remotes.aws) {
+                def jarName = "${appName}-${appVersion}.jar"
+                def jarDir = "${project.rootDir}/build/libs/" + jarName
+                def destDir = "/home/ubuntu/wsi"
+//                print jarDir
+//                execute "rm ${destDir}/${jarName}"
+//                put from: jarDir, into: destDir + "/" + jarName
+                execute "java -jar ${destDir}/${jarName} &"
+            }
+        }
+    }
 }
 
 dependencyManagement {
@@ -47,7 +81,7 @@ dependencies {
 
     testCompile('junit:junit:4.12')
     testCompile("org.springframework.boot:spring-boot-starter-test")
-    testCompile('org.springframework:org.springframework.test')
+//    testCompile('org.springframework:org.springframework.test')
 
     // lombok
     compileOnly('org.projectlombok:lombok:1.18.8')
@@ -58,5 +92,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/commons-io/commons-io
     compile('commons-io:commons-io:2.6')
+
+    compile('org.javassist:javassist:3.25.0-GA')
 
 }

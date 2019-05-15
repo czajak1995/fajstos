@@ -19,9 +19,9 @@ spring:
         allow-bean-definition-overriding: true
     datasource:
         driver-class-name: com.mysql.jdbc.Driver
-        password: pass123
+        password: root
         url: jdbc:mysql://localhost:3306/fajstos?useSSL=false
-        username: test
+        username: konrad
 
     h2:
         console:
