@@ -1,13 +1,3 @@
-/* .font-phaistos {
-    font-family: phaistos
-} */
-
-/* E8 -> up */
-/* .icon-down:before {
-    font-family: phaistos;
-    content: "\0101d0"
-} */
-
 .mat-grid-list {
     border: #142 2px;
     top: 10px;
@@ -22,12 +12,24 @@
 }
 
 .glyph-img {
-    text-align: center;
+    width: auto;
+    display: block;
+    margin: auto;
+    height: 120px;
 }
 
 input[id="glyph-input"] {
-    border: 1px solid black;
+    border: 2px solid black;
     background-color: rgb(212, 191, 182);
     font-size: 48px;
-    width: 60px;
+    width: 120px;
+    text-align: center;
+    margin-top: 5px;
 }
+
+.error-msg {
+    color: #a94442;
+  }
+  .fix-error-icon {
+    top: 27px;
+  }

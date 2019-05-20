@@ -7,7 +7,7 @@ class Track:
         self.name = name
 
 def generate_script(tracks, path, lector_id):
-    template = "REPLACE INTO Tracks(id, name, path, voice_over_id) VALUES "
+    template = "REPLACE INTO tracks(id, name, path, voice_over_id) VALUES "
 
     file = open("tracks.sql", 'w+')
 

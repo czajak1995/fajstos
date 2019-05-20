@@ -1,11 +1,11 @@
 <form [formGroup]="glyphFormGroup">
   <div id="characters-palette">
-    <mat-grid-list cols="10" rowHeight="1:1" gutterSize="4" style="padding:10px">
+    <mat-grid-list cols="7" rowHeight="1:1" gutterSize="10" style="padding:10px">
       <mat-grid-tile *ngFor="let glyph of glyphs">
           <div id="glyph">
-            <img src="{{glyph.imgUrl}}" width=50px (click)="display(glyph)">
+            <img class="glyph-img" src="{{glyph.imgUrl}}" width=50px (click)="display(glyph)">
             <div class="glyph-input">
-              <input matInput [(ngModel)]="glyph.mapping" id="glyph-input" maxlength=2 minlength=2 required
+              <input matInput [(ngModel)]="glyph.mapping" id="glyph-input" maxlength=2 minlength=2 required pattern="{{glyphMappingPattern}}"
                     title="Glyph mapping [consonant][vovel]" formControlName="mapping">
             </div>
           </div>
@@ -14,7 +14,8 @@
   </div>
   <br/>
 
-  <button class="submit-btn" color="primary" mat-raised-button type="submit">Submit</button>
+  <!-- <button class="submit-btn" color="primary" mat-raised-button type="submit" [disabled]="!glyphFormGroup.valid">Submit</button> -->
+  <button class="submit-btn" color="primary" mat-raised-button type="submit" (click)="onSubmit()">Record mp3</button>
 
 </form>
 
@@ -26,4 +27,4 @@
 </select>
 
 <br/>
-<button (click)="record()">Record mp3</button>
+<button (click)="reset()" (click)="reset()">Reset</button>

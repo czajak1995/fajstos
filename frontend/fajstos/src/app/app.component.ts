@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { AudioService } from './audio/audio.service';
 import { saveAs } from 'file-saver';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -11,13 +12,13 @@ import { saveAs } from 'file-saver';
 export class AppComponent {
   title = 'fajstos';
   glyphs : PhaistosGlyph[] = [];
-  imgUrlTemplate: string = "assets/icons/Phaistos_glyph_{{number}}.svg.png";
-  glyphNumbers : number = 16;
-  glyphMappingPatter = "^[qwrtpsdfghjklzxcvbnm][aeiouy]$";
+  glyphNumbers : number = 45;
+  glyphMappingPattern = "^[QqWwRrTtPpSsDdFfGgHhJjKkLlZzXxCcVvBbNnMm][AaEeIiOoUu]$";
   fullText: string = "";
   mp3Notes: string[] = [];
   speaker: string = "dorota";
   speakers: string[] = [];
+  glyphFormGroup: FormGroup;
 
   validation_messages = {
     'mapping': [
@@ -27,18 +28,19 @@ export class AppComponent {
     ]
   }
 
-  glyphFormGroup = new FormGroup({
-    mapping: new FormControl('mapping', Validators.required)
-  })
 
-  constructor(private _service: AudioService) {
-    for(var i=1; i<this.glyphNumbers; i++) {
+  constructor(private _service: AudioService, public toastr: ToastrService) {
+    for(var i=1; i<=this.glyphNumbers; i++) {
       if(i < 10) {
         this.glyphs.push(new PhaistosGlyph(i,"","assets/icons/Phaistos_glyph_0" + i + ".svg.png"));
       } else {
         this.glyphs.push(new PhaistosGlyph(i,"","assets/icons/Phaistos_glyph_" + i + ".svg.png"));
       }
     }
+
+    this.glyphFormGroup = new FormGroup({
+      mapping: new FormControl('mapping', [Validators.pattern(this.glyphMappingPattern)])
+    })
 
     _service.getAllSpeakerNames().subscribe((data) => this.speakers = data)
   }
@@ -47,12 +49,16 @@ export class AppComponent {
     console.log(glyph.mapping)
     if(glyph.mapping != "") {
       this.fullText = this.fullText + glyph.mapping;
-      this.mp3Notes.push(glyph.mapping)
+      this.mp3Notes.push(glyph.mapping.toLowerCase())
     }
   }
 
   public record() {
     console.log(this.fullText)
+    if(this.mp3Notes.length == 0) {
+      this.toastr.error('Record cannot be empty', 'Error!');
+      return;
+    }
     var preparedNotes = this.mp3Notes.join(",")
     console.log(preparedNotes)
     this._service.getMergedAudio(preparedNotes, this.speaker).subscribe(
@@ -68,6 +74,33 @@ export class AppComponent {
     }
     )
   }
+
+  public reset() {
+    this.mp3Notes.length = 0;
+    this.fullText = ""
+  }
+
+  public onSubmit() {
+    if (this.glyphFormGroup.valid) {
+      console.log('form submitted');
+      this.record()
+    } else {
+      this.toastr.error('Glyph mapping must be in format [consonant][vovel]', 'Error!');
+      this.validateAllFormFields(this.glyphFormGroup);
+    }
+  }
+
+  validateAllFormFields(formGroup: FormGroup) {       
+  Object.keys(formGroup.controls).forEach(field => {  
+    const control = formGroup.get(field);             
+    if (control instanceof FormControl) {             
+      control.markAsTouched({ onlySelf: true });
+      control.markAsDirty({ onlySelf: true });
+    } else if (control instanceof FormGroup) {        
+      this.validateAllFormFields(control);            
+    }
+  });
+}
 }
 
 class PhaistosGlyph {

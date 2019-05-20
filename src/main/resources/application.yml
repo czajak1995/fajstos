@@ -20,7 +20,7 @@ spring:
     datasource:
         driver-class-name: com.mysql.jdbc.Driver
         password: root
-        url: jdbc:mysql://localhost:3306/fajstos?useSSL=false
+        url: jdbc:mysql://localhost:3306/fajstos?useSSL=false&serverTimezone=UTC
         username: konrad
 
     h2:
