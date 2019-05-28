@@ -15,14 +15,16 @@
     width: auto;
     display: block;
     margin: auto;
-    height: 120px;
+    height: 60px;
 }
 
 input[id="glyph-input"] {
     border: 2px solid black;
     background-color: rgb(212, 191, 182);
-    font-size: 48px;
-    width: 120px;
+    font-size: 30px;
+    font-style: italic;
+    width: 60px;
+    height: 30px;
     text-align: center;
     margin-top: 5px;
 }

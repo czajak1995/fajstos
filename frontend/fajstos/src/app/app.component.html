@@ -1,6 +1,6 @@
 <form [formGroup]="glyphFormGroup">
   <div id="characters-palette">
-    <mat-grid-list cols="7" rowHeight="1:1" gutterSize="10" style="padding:10px">
+    <mat-grid-list cols="12" rowHeight="1:1" gutterSize="10" style="padding:10px">
       <mat-grid-tile *ngFor="let glyph of glyphs">
           <div id="glyph">
             <img class="glyph-img" src="{{glyph.imgUrl}}" width=50px (click)="display(glyph)">
